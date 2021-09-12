@@ -1,0 +1,3 @@
+I this is an informational
+E this is an error
+F this is fatal

@@ -1,0 +1,4 @@
+(INFO)[this is an informational] - Sun Sep 12 02:46:45 2021
+
+(ERROR)[this is an error] - Sun Sep 12 02:46:45 2021
+
