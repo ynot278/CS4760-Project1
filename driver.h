@@ -8,24 +8,27 @@
 
 using namespace std;
 
-int addmsg (const char type, const char * msg);
-void clearlog();
-char * getlog();
-int savelog (char * filename);
+// I got confused reading the rubric and do not know what to do with these
+//int addmsg (const char type, const char * msg);
+//void clearlog();
+//char * getlog();
+//int savelog (char * filename);
 
-struct data_struct{
-	time_t time; 	//time stamp
-	char type; 		//message type (i/w/e/f)
-	char * string; //message string
+//struct data_struct{
+//	time_t time; 	//time stamp
+//	char type; 		//message type (i/w/e/f)
+//	char * string; //message string
 	
-}data_t;
+//}data_t;
 
+//I am sorry
 
 void helpMenu(){
 	cout << "Usage: driver [-h] [-t sec] [logfile]";
 	exit (EXIT_SUCCESS);
 }
 
+//Used when ./driver
 void logFiles(ofstream &outFile){
 	string type;
 	string myText;
@@ -68,6 +71,7 @@ void logFiles(ofstream &outFile){
 
 }
 
+//Used when ./driver -t sec
 void printMsg(int &seconds){
 	int delay;
 	string type;
@@ -113,6 +117,8 @@ void printMsg(int &seconds){
 	exit (EXIT_SUCCESS);
 }
 
+
+//main
 void parseArg(int argc, char *argv[]){
 	int seconds;
 	int opt;
