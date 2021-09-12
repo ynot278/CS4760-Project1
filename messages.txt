@@ -1,3 +1,4 @@
-I this is an informational
-E this is an error
-F this is fatal
+I i like pie
+W you might get hurt
+E i cant solve problem
+F i died
