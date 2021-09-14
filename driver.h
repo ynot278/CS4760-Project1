@@ -1,3 +1,5 @@
+//Author: Tony Pham Sept 14, 2021
+
 #include <iostream>
 #include <unistd.h>
 #include <fstream>
@@ -28,88 +30,71 @@ void helpMenu(){
 	exit (EXIT_SUCCESS);
 }
 
-//Used when ./driver
-void logFiles(ofstream &outFile){
-	string type;
-	string myText;
-	string convert;
-	ifstream inFile("messages.txt");
-	if(!inFile){
-		perror("Error");
-	}
-
-	while(getline (inFile, myText)){
-			time_t now = time(0);
-			char* dt = ctime(&now);
-
-			type = myText[0];
-
-			if (myText[0] == 'I'){
-				convert = "INFO";
-			}
-			else if (myText[0] == 'W'){
-				convert = "WARN";
-			}
-			else if (myText[0] == 'E'){
-				convert = "ERROR";
-			}
-			else if (myText[0] == 'F'){
-				convert = "FATAL";
-				ofstream fatal("savelog");
-				myText = myText.substr(2, myText.size());
-				fatal << "(" << convert << ")" << "[" << myText << "] - " << dt << endl;
-				exit (EXIT_FAILURE);
-			}
-			else
-				perror("Error");
-
-			myText = myText.substr(2, myText.size());
-			outFile << "(" << convert << ")" << "[" << myText << "] - " << dt << endl;
-		}
+//get time stamp
+char* getTime(){
+	time_t now = time(0);
+	char* dt = ctime(&now);
+	return dt;
 }
 
-//Used when ./driver -t sec
-void printMsg(int &seconds){
-	int delay;
-	string type;
-	string myText;
-	string convert;
-	ifstream inFile("messages.txt");
-
-	if(!inFile){
+//convert the message type to words
+string convertType(char type){
+	string convertType(1, type);
+	string converted;
+	if (convertType == "I"){
+		converted = "INFO";
+		return converted;	
+	}
+	else if (convertType == "W"){
+		converted = "WARNING";
+		return converted;	
+	}
+	else if (convertType == "E"){
+		converted = "ERROR";
+		return converted;	
+	}
+	else if (convertType == "F"){
+		converted = "FATAL";
+		return converted;
+	}
+	else
 		perror("Error");
+		exit (EXIT_FAILURE);
+}
+
+//make file and format type, msg, time to file.
+int savelog (string filename, string msg, char type){
+
+	ofstream outfile(filename.c_str());
+
+	string convert = convertType(type);
+
+	if (convert == "INFO" || convert == "WARNING" || convert == "ERROR" || convert == "FATAL"){
+		outfile << "[" << convert << "] ";
+		outfile << "(" << msg << ") - " ;
+	
+		char* timer = getTime();
+		outfile << timer;
+		return 0;
+	}else{
+		perror("Error");
+		return -1;
 	}
+}
 
-	while(getline (inFile, myText)){
-			time_t now = time(0);
-			char* dt = ctime(&now);
+//make empty
+void clearlog(string filename){
+	ofstream outfile;
+	outfile.open(filename, std::ofstream::out | std::ofstream::trunc);
+	outfile.close();
+}
 
-			type = myText[0];
+//print formatted type, msg, time
+void getlog(string myText, char type){
+	string convert = convertType(type);
+	cout << "[" << convert << "] ";
+	cout << "(" << myText << ") - ";
 
-			if (myText[0] == 'I'){
-				convert = "INFO";
-			}
-			else if (myText[0] == 'W'){
-				convert = "WARN";
-			}
-			else if (myText[0] == 'E'){
-				convert = "ERROR";
-			}
-			else if (myText[0] == 'F'){
-				convert = "FATAL";
-				ofstream fatal("savelog");
-				myText = myText.substr(2, myText.size());
-				fatal << "(" << convert << ")" << "[" << myText << "] - " << dt << endl;
-				exit (EXIT_FAILURE);
-			}
-			else
-				perror("Error");
-
-			myText = myText.substr(2, myText.size());
-			cout << "(" << convert << ")" << "[" << myText << "] - " << dt << endl;
-			delay = rand() % (2*seconds + 1) + 0;
-			sleep(delay);
-	}
-	cout << "Finished Printing";
-	exit (EXIT_SUCCESS);
+	char* timer = getTime();
+	cout << timer;
 }

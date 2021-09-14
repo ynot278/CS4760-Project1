@@ -1,13 +1,20 @@
+//Author: Tony Pham Sept 14, 2021
+
 #include "driver.h"
 
-int main(int argc, char*argv[]) {
-  	int seconds;
+int main(int argc, char* argv[]) {
+
+	char type = 'W';
+	string msg = "computer is overheating";
+
+	int seconds;
 	int opt;
 
 	if(argc == 1){
-		ofstream outFile("messages.log");
-		logFiles(outFile);
-		}
+		const char* filename = "messages.log";
+		savelog(filename, msg, type);
+		exit (EXIT_SUCCESS);
+	}
 	
 	while((opt = getopt(argc, argv, "ht:")) != -1){
 		switch(opt){
@@ -16,7 +23,10 @@ int main(int argc, char*argv[]) {
 				break;
 			case 't': 
 				seconds = atoi(optarg);
-				printMsg(seconds);
+				seconds = rand() % (2*seconds + 1) + 0;
+				getlog(msg, type);
+				sleep(seconds);
+				exit (EXIT_SUCCESS);
 				break;
 			default: 
 				exit (EXIT_FAILURE);
@@ -25,7 +35,7 @@ int main(int argc, char*argv[]) {
 	}
 
 	if((opt = getopt(argc, argv, "ht:")) != 1){
-		ofstream outFile(argv[1]);
-		logFiles(outFile);
+		string filename = argv[1];
+		savelog(filename, msg, type);
 	}
 }
