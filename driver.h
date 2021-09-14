@@ -34,7 +34,6 @@ void logFiles(ofstream &outFile){
 	string myText;
 	string convert;
 	ifstream inFile("messages.txt");
-
 	if(!inFile){
 		perror("Error");
 	}
@@ -67,8 +66,6 @@ void logFiles(ofstream &outFile){
 			myText = myText.substr(2, myText.size());
 			outFile << "(" << convert << ")" << "[" << myText << "] - " << dt << endl;
 		}
-
-
 }
 
 //Used when ./driver -t sec
@@ -115,36 +112,4 @@ void printMsg(int &seconds){
 	}
 	cout << "Finished Printing";
 	exit (EXIT_SUCCESS);
-}
-
-
-//main
-void parseArg(int argc, char *argv[]){
-	int seconds;
-	int opt;
-
-	if(argc == 1){
-		ofstream outFile("messages.log");
-		logFiles(outFile);
-		}
-	
-	while((opt = getopt(argc, argv, "ht:")) != -1){
-		switch(opt){
-			case 'h':
-				helpMenu();
-				break;
-			case 't': 
-				seconds = atoi(optarg);
-				printMsg(seconds);
-				break;
-			default: 
-				exit (EXIT_FAILURE);
-				break;
-		}
-	}
-
-	if((opt = getopt(argc, argv, "ht:")) != 1){
-		ofstream outFile(argv[1]);
-		logFiles(outFile);
-	}
 }
